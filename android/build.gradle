@@ -5,6 +5,7 @@ buildscript {
     ext.kotlin_version = '1.5.30'
     repositories {
         google()
+        // jcenter устарел, если нужно, оставьте.
         jcenter()
     }
 
@@ -28,15 +29,31 @@ android {
     compileSdkVersion 34
     namespace 'com.shekarmudaliyar.social_share'
 
+    // 1. Настраиваем Java компилятор на 1.8
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // Исходники Kotlin
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
         minSdkVersion 16
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     lintOptions {
         disable 'InvalidPackage'
+    }
+}
+
+// 2. Настраиваем Kotlin на jvmTarget = "1.8"
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
